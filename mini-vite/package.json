@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev-node": "tsc -w --incremental --p src/node"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/connect": "^3.4.34",
+    "connect": "^3.7.0",
     "rollup": "^2.44.0"
   }
 }
