@@ -14,5 +14,10 @@
     "@types/connect": "^3.4.34",
     "connect": "^3.7.0",
     "rollup": "^2.44.0"
+  },
+  "devDependencies": {
+    "@types/etag": "^1.8.0",
+    "etag": "^1.8.1",
+    "types": "link:./types"
   }
 }

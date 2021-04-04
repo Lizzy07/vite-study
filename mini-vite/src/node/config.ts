@@ -1,4 +1,6 @@
+import path from 'path'
 import { Plugin } from './plugin'
+import { normalizePath } from './utils'
 export type PluginOption = Plugin | false | null | undefined
 export interface UserConfig {
   // 项目根目录（index.html文件所在的位置）。可以是一个绝对路径，或者相对于该配置文件本身的路径。
@@ -26,7 +28,7 @@ export type ResolvedConfig = Readonly<
   Omit<UserConfig, 'plugins' | 'alias' | 'dedupe' | 'assetsInclude'> & {
     // configFile: string | undefined
     // inlineConfig: UserConfig
-    // root: string
+    root: string
   }
 >
 
@@ -37,8 +39,13 @@ export async function resolveConfig(
 ): Promise<ResolvedConfig> {
   let config = inlineConfig
   let mode = inlineConfig.mode || defaultMode
+  // resolve root
+  const resolvedRoot = normalizePath(
+    config.root ? path.resolve(config.root) : process.cwd()
+  )
   const resolved: ResolvedConfig = {
     ...config,
+    root: resolvedRoot,
     mode,
   }
   return resolved

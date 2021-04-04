@@ -2,10 +2,15 @@ import * as http from 'http'
 import connect from 'connect'
 import { resolveConfig, InlineConfig, ResolvedConfig } from '../config'
 import { resolveHttpServer } from './http'
+import {
+  createDevHtmlTransformFn,
+  indexHtmlMiddleware,
+} from './middlewares/indexHtml'
 
 export interface ViteDevServer {
   config: ResolvedConfig
   httpServer: http.Server
+  transformIndexHtml(url: string, html: string): Promise<string>
   listen(port?: number, isRestart?: boolean): Promise<ViteDevServer>
 }
 
@@ -18,10 +23,15 @@ export async function createServer(
   const server: ViteDevServer = {
     config,
     httpServer,
+    transformIndexHtml: null as any,
     listen(port?: number, isRestart?: boolean) {
       return startServer(server, port, isRestart)
     },
   }
+
+  server.transformIndexHtml = createDevHtmlTransformFn(server)
+
+  middlewares.use(indexHtmlMiddleware(server))
   if (httpServer) {
     // overwrite listen to run optimizer before server start
   }
