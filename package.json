@@ -1,0 +1,26 @@
+{
+  "name": "vite-study",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "mini-vite"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc --noEmit && vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.0.5"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^1.1.5",
+    "@vue/compiler-sfc": "^3.0.5",
+    "koa": "^2.13.1",
+    "koa-mount": "^4.0.0",
+    "prettier": "2.2.1",
+    "typescript": "^4.1.3",
+    "vite": "^2.1.3",
+    "vue-tsc": "^0.0.8"
+  }
+}
