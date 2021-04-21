@@ -12,17 +12,28 @@
     "build-mini-vite": "cd mini-vite && npm run dev-node && cd ..",
     "serve": "vite preview"
   },
+  "gitHooks": {
+    "commit-msg": "node scripts/verifyCommit.js"
+  },
+  "lint-staged": {
+    "*.ts": [
+      "eslint"
+    ]
+  },
   "dependencies": {
     "vue": "^3.0.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^1.1.5",
     "@vue/compiler-sfc": "^3.0.5",
+    "chalk": "^4.1.1",
     "koa": "^2.13.1",
     "koa-mount": "^4.0.0",
+    "lint-staged": "^10.5.4",
     "prettier": "2.2.1",
     "typescript": "^4.1.3",
     "vite": "^2.1.3",
-    "vue-tsc": "^0.0.8"
+    "vue-tsc": "^0.0.8",
+    "yorkie": "^2.0.0"
   }
 }
