@@ -29,6 +29,7 @@ export type ResolvedConfig = Readonly<
     // configFile: string | undefined
     // inlineConfig: UserConfig
     root: string
+    plugins: readonly Plugin[]
   }
 >
 
@@ -43,10 +44,12 @@ export async function resolveConfig(
   const resolvedRoot = normalizePath(
     config.root ? path.resolve(config.root) : process.cwd()
   )
+  const userPlugins = (config.plugins || []) as Plugin[]
   const resolved: ResolvedConfig = {
     ...config,
     root: resolvedRoot,
     mode,
+    plugins: userPlugins,
   }
   return resolved
 }

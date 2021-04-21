@@ -8,6 +8,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
+    "mini-vite": "node mini-vite/dist/node/cli.js",
+    "build-mini-vite": "cd mini-vite && npm run dev-node && cd ..",
     "serve": "vite preview"
   },
   "dependencies": {

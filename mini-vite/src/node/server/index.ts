@@ -6,10 +6,32 @@ import {
   createDevHtmlTransformFn,
   indexHtmlMiddleware,
 } from './middlewares/indexHtml'
+import { transformMiddleware } from './middlewares/transform'
+import { createPluginContainer, PluginContainer } from '../pluginContainer'
+import { Connect } from 'types/connect'
+
+export type ServerHook = (
+  server: ViteDevServer
+) => (() => void) | void | Promise<(() => void) | void>
 
 export interface ViteDevServer {
+  /**
+   * 解析后的vite配置
+   */
   config: ResolvedConfig
+  /**
+   * 一个connect app实例
+   * 能够给dev server添加自定义中间件
+   */
+  middlewares: Connect.Server
+  /**
+   * 本地的http server实例，在中间件模式下是null
+   */
   httpServer: http.Server
+  /**
+   * rollup 插件容器能够运行插件的hooks
+   */
+  pluginContainer: PluginContainer
   transformIndexHtml(url: string, html: string): Promise<string>
   listen(port?: number, isRestart?: boolean): Promise<ViteDevServer>
 }
@@ -20,14 +42,20 @@ export async function createServer(
   const config = await resolveConfig(inlineConfig, 'serve', 'development')
   const middlewares = connect()
   const httpServer = await resolveHttpServer(middlewares)
+  const container = await createPluginContainer(config)
   const server: ViteDevServer = {
     config,
+    middlewares,
     httpServer,
+    pluginContainer: container,
     transformIndexHtml: null as any,
     listen(port?: number, isRestart?: boolean) {
       return startServer(server, port, isRestart)
     },
   }
+
+  // main transform middleware
+  middlewares.use(transformMiddleware(server))
 
   server.transformIndexHtml = createDevHtmlTransformFn(server)
 
